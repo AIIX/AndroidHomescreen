@@ -36,6 +36,19 @@ Mycroft.Delegate {
         visible: false
         font.pointSize: Kirigami.Theme.defaultFont.pointSize * 0.9
     }
+
+    Gradient {
+	id: gradientVertical
+	GradientStop { position: 0.0; color: "#313131" }
+	GradientStop { position: 0.5; color: Qt.rgba(0, 0, 0, 0.5) }
+	GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0) }
+    }
+    
+    Gradient {
+	id: gradientHorizontal
+	GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0) }
+     }
+  
     
     GridLayout {
         id: layoutGrid
@@ -43,21 +56,25 @@ Mycroft.Delegate {
         anchors.margins: Kirigami.Units.largeSpacing
         columns: root.horizontalMode ? 2 : 1
         rows: 1
-        
-        Item {
+
+        Rectangle {
             id: clockArea
             Layout.fillWidth: root.horizontalMode ? 0 : 1
-            Layout.preferredWidth: root.horizontalMode ? dtLayout.childrenRect.width : parent.width
-            Layout.preferredHeight: parent.height / 6
+            Layout.preferredWidth: root.horizontalMode ? dtLayout.childrenRect.width + Kirigami.Units.gridUnit * 2 : parent.width
+            Layout.preferredHeight: root.horizontalMode ? parent.height : parent.height / 6
             Layout.alignment: root.horizontalMode ? Qt.AlignVCenter | Qt.AlignHCenter : Qt.AlignTop | Qt.AlignHCenter
-            Layout.topMargin: Kirigami.Units.largeSpacing
-            
+            Layout.margins: root.horizontalModel ? Kirigami.Units.largeSpacing : -Kirigami.Units.largeSpacing     
+	    z: 10
+	    gradient: root.horizontalMode ? gradientHorizontal : gradientVertical
+
             GridLayout {
                 id: dtLayout
-                width: parent.width
                 height: childrenRect.implicitHeight
-                anchors.centerIn: parent
-                anchors.margins: Kirigami.Units.largeSpacing
+                anchors.top: root.horizontalMode ? undefined : parent.top
+		anchors.verticalCenter: root.horizontalMode ? parent.verticalCenter : undefined
+		anchors.left: parent.left
+		anchors.right: parent.right
+                anchors.margins: Kirigami.Units.largeSpacing * 2
                 columns: root.horizontalMode ? 1 : 2
                 rows: 1
 
@@ -97,13 +114,13 @@ Mycroft.Delegate {
             }
         }
         
-        Item {
-            id: spacer
-            Layout.fillWidth: true
-            Layout.preferredHeight: clockArea.height / 2
-            visible: !root.horizontalMode
-            enabled: !root.horizontalMode
-        }
+        //Item {
+            //id: spacer
+            //Layout.fillWidth: true
+            //Layout.preferredHeight: clockArea.height / 2
+            //visible: !root.horizontalMode
+            //enabled: !root.horizontalMode
+        //}
         
         Item {
             id: applicationArea
@@ -114,15 +131,19 @@ Mycroft.Delegate {
             GridView {
                 id: appLauncherView
                 model: skillLauncherList.skillList
-                clip: true
+                clip: false
                 snapMode: GridView.SnapToRow
                 width: parent.width
                 height: parent.height
+		z: 1
+		cacheBuffer: clockArea.height + Kirigami.Units.gridUnit
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: root.horizontalMode ? parent.verticalCenter : 0
                 cellWidth: parent.width / 4
                 cellHeight: root.horizontalMode ? parent.height / 2 : parent.height / 3
-                delegate: Delegates.AppDelegate {}
+                delegate: Delegates.AppDelegate {
+                    metricHeight: metrics.contentHeight
+                }
             }
         }
     }

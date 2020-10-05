@@ -7,7 +7,8 @@ Label {
     font.capitalization: Font.AllUppercase
     font.family: "Noto Sans Display"
     color: "white"
-    layer.enabled: true
+    clip: false    
+    layer.enabled: false
     layer.effect: DropShadow {
         horizontalOffset: 0
         verticalOffset: 2

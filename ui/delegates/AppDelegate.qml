@@ -7,11 +7,12 @@ import Mycroft 1.0 as Mycroft
 
 Item {
     readonly property GridView gridView: GridView.view
+    property var metricHeight
     implicitWidth: gridView.cellWidth
     implicitHeight: gridView.cellHeight
 
     ItemDelegate {
-        implicitWidth: parent.width - Kirigami.Units.largeSpacing
+        implicitWidth: parent.width - Kirigami.Units.smallSpacing
         implicitHeight: parent.height - Kirigami.Units.largeSpacing
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -21,13 +22,16 @@ Item {
         }
 
         contentItem: ColumnLayout {
+            spacing: 0
+            
             Image {
                 id: iconItem
                 Layout.minimumWidth: parent.width
-                Layout.minimumHeight: parent.width
+                Layout.minimumHeight: parent.height - metricHeight * 2
                 Layout.preferredHeight: Layout.minimumHeight
                 Layout.preferredWidth: Layout.minimumWidth
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                fillMode: Image.PreserveAspectFit 
                 source: modelData.skillIconPath
                 Behavior on scale {
                     NumberAnimation {
@@ -35,15 +39,23 @@ Item {
                         easing.type: Easing.InOutQuad
                     }
                 }
+                
+                Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                }
             }
 
             Label {
                 id: labelgridView
                 visible: text.length > 0
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.minimumHeight: metricHeight * 2.5
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignTop
+                Layout.alignment: Qt.AlignTop
                 maximumLineCount: 2
                 font.pointSize: Kirigami.Theme.defaultFont.pointSize * 0.9
                 elide: Text.ElideRight
@@ -57,6 +69,11 @@ Item {
                     samples: 16
                     cached: true
                     color: Qt.rgba(0, 0, 0, 1)
+                }
+                
+                Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
                 }
             }
         }
