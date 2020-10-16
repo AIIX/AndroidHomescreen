@@ -27,6 +27,7 @@ class AndroidHomescreen(MycroftSkill):
         self.skill_manager = None
 
     def initialize(self):
+        self.add_event("pixabay.gallery.set_wallpaper", self.set_wallpaper)
         now = datetime.datetime.now()
         callback_time = (datetime.datetime(now.year, now.month, now.day,
                                            now.hour, now.minute) +
@@ -109,6 +110,12 @@ class AndroidHomescreen(MycroftSkill):
     def update_dt(self):
         self.gui['time_string'] = self.dt_skill.get_display_current_time()
         self.gui['date_string'] = self.dt_skill.get_display_date()
+        
+    def set_wallpaper(self, message):
+        self.gui['wallpaper_path'] = message.data["imagePath"]
+    
+    def set_default_wallpaper(self, message):
+        self.gui['wallpaper_path'] = self.root_dir + "/ui/img/seaside.jpg"
 
     def stop(self):
         pass

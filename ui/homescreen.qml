@@ -12,6 +12,7 @@ Mycroft.Delegate {
     readonly property int reservedSpaceForLabel: metrics.height
     property bool horizontalMode: root.width > root.height ? 1 : 0
     property bool nonFHD: root.width <= 380 ? 1 : 0
+    property var wallpaperSetPath: sessionData.wallpaper_path
     fillWidth: true
     leftPadding: 0
     rightPadding: 0
@@ -22,7 +23,14 @@ Mycroft.Delegate {
         console.log(skillLauncherList)
     }
     
+    onWallpaperSetPathChanged: {
+        if(wallpaperSetPath) {
+            rootbg.source = Qt.resolvedUrl(wallpaperSetPath)
+        }
+    }
+    
     background: Image {
+        id: rootbg
         source: Qt.resolvedUrl("img/seaside.jpg")
         anchors.fill: parent
         cache: false
@@ -71,9 +79,9 @@ Mycroft.Delegate {
                 id: dtLayout
                 height: childrenRect.implicitHeight
                 anchors.top: root.horizontalMode ? undefined : parent.top
-		anchors.verticalCenter: root.horizontalMode ? parent.verticalCenter : undefined
-		anchors.left: parent.left
-		anchors.right: parent.right
+                anchors.verticalCenter: root.horizontalMode ? parent.verticalCenter : undefined
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.margins: Kirigami.Units.largeSpacing * 2
                 columns: root.horizontalMode ? 1 : 2
                 rows: 1
