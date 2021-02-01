@@ -58,7 +58,7 @@ class AndroidHomescreen(MycroftSkill):
         self.gui['month_string'] = self.dt_skill.get_month_date()
         self.gui['year_string'] = self.dt_skill.get_year()
         self.gui['skillLauncher'] = self.androidSkillObject
-        self.gui.show_page('homescreen.qml')
+        self.gui.show_page('idle.qml')
 
     def handle_idle_update_time(self):
         self.gui['time_string'] = self.dt_skill.get_display_current_time()
