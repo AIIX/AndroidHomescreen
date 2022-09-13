@@ -65,7 +65,9 @@ class AndroidHomescreen(MycroftSkill):
 
     def generate_homescreen_icons(self):
         self.androidSkillsList.clear()
-        skill_directories = self.skill_manager._get_skill_directories()
+        dict_skill_directories = self.skill_manager._get_skill_directories()
+        print(dir(dict_skill_directories))
+        skill_directories = list(dict_skill_directories)
         print(skill_directories)
         for x in range(len(skill_directories)):
             if skill_directories[x] not in self.allSkills:
